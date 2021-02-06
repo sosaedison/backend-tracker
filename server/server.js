@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const helmet = require("helmet");
 const UserRouter = require("./routes/user");
 const BayRouter = require("./routes/bay");
+const DataRouter = require("./routes/baydata");
 require("dotenv").config();
 
 // Middleware Functions
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/user", UserRouter);
 app.use("/bay", BayRouter);
+app.use("/data", DataRouter);
 
 // const server = https.createServer({key: key, cert: cert }, app);
 // Connection to the Mongo Atlas DB at the TrackerData DB
