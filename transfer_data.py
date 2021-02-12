@@ -7,7 +7,7 @@ client = MongoClient(
     tlsAllowInvalidCertificates=True,
 )
 db = client["Tracker"]
-collection = db["data"]
+collection = db["datas"]
 with open("data.json", "r") as data_json:
     data = json.load(data_json)
     for entry in data:
@@ -19,4 +19,4 @@ with open("data.json", "r") as data_json:
             "time": entry["time"],
         }
         new_id = collection.insert_one(new_entry).inserted_id
-        print(new_id)
+    print("DONE")
