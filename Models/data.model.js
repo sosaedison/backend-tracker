@@ -1,19 +1,17 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-
+const { Schema, model } = require("mongoose");
+const fuzzy_match = require("mongoose-fuzzy-searching");
 const DataSchema = new Schema(
   {
     game: {
       type: String,
       required: true,
     },
-    playSession: {
+    play_time: {
       type: Number,
       required: true,
     },
-    bayid: {
-      type: Schema.Types.ObjectId,
-      ref: "bays",
+    bay_id: {
+      type: String,
       required: true,
     },
     date: String,
@@ -24,4 +22,7 @@ const DataSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model("Data", DataSchema);
+DataSchema.plugin(fuzzy_match, {
+  fields: ["game", "bay_id", "date", "time", "time_played"],
+});
+module.exports = model("Data", DataSchema);
