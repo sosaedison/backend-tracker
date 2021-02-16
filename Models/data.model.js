@@ -10,9 +10,14 @@ const DataSchema = new Schema(
       type: Number,
       required: true,
     },
-    bay_id: {
+    bay_name: {
       type: String,
       required: true,
+    },
+    bay_id: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "bays",
     },
     date: String,
     time: String,
