@@ -10,7 +10,7 @@ const BaySchema = new Schema(
     data: [
       {
         type: Schema.Types.ObjectId,
-        ref: "data",
+        ref: "datas",
       },
     ],
     company: String,

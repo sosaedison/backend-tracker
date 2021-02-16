@@ -15,6 +15,10 @@ const UserSchema = new Schema(
       unique: true,
     },
     company: String,
+    password: {
+      type: String,
+      required: true,
+    },
     bays: [
       {
         type: Schema.Types.ObjectId,
