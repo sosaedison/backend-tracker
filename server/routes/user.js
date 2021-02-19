@@ -1,47 +1,35 @@
 const router = require("express").Router();
 const User = require("../../Models/user.model");
 const bcrypt = require("bcryptjs");
+const rand = require("random-token").create(process.env.RAND_TOKEN_SALT);
 
 router.route("/register").post((req, res) => {
   try {
-    // var name = req.body.name;
-    // var email = req.body.email;
-    // var company = req.body.company;
-    // var password = bcrypt.genSalt(
-    //   process.env.SALT_ROUNDS,
-    //   function (err, salt) {
-    //     if (err) {
-    //       return err;
-    //     }
-    //     bcrypt.hash(req.body.password, salt, function (err, hashed) {
-    //       if (err) {
-    //         return err;
-    //       }
-    //       return hashed;
-    //     });
-    //   }
-    // );
-
-    let newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
-      company: req.body.company,
-      password: "password",
-      bays: [],
-      games: [],
-      token: "",
-    });
-
-    newUser
-      .save()
-      .then((data) => {
-        return res.status(201).json({ data });
-      })
-      .catch((err) => {
-        return res.status(500).json({ err: err, msg: "error save" });
+    bcrypt.hash(req.body.password, salt, function (err, hashed) {
+      if (err) {
+        return err;
+      }
+      let newUser = new User({
+        name: req.body.name,
+        email: req.body.email,
+        company: req.body.company,
+        password: hashed,
+        bays: [],
+        games: [],
+        token: rand(process.env.SALT_ROUNDS),
       });
+
+      newUser
+        .save()
+        .then((data) => {
+          return res.status(201).json({ data });
+        })
+        .catch((err) => {
+          return res.status(500).json({ err });
+        });
+    });
   } catch (err) {
-    return res.status(500).json({ err: err, msg: "error try" });
+    return res.status(500).json({ err });
   }
 });
 router.route("/login").post((req, res) => {
