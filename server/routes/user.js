@@ -5,31 +5,37 @@ const rand = require("random-token").create(process.env.RAND_TOKEN_SALT);
 
 router.route("/register").post((req, res) => {
   try {
-    bcrypt.hash(req.body.password, salt, function (err, hashed) {
+    bcrypt.genSalt(10, (err, salt) => {
       if (err) {
-        return err;
+        return res.status(500).send("Server Error");
       }
-      let newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        company: req.body.company,
-        password: hashed,
-        bays: [],
-        games: [],
-        token: rand(process.env.SALT_ROUNDS),
-      });
-
-      newUser
-        .save()
-        .then((data) => {
-          return res.status(201).json({ data });
+      bcrypt.hash(req.body.password, salt, function (err, hashed) {
+        if (err) {
+          return res.status(500).send("Server Error");
+        }
+        let newUser = new User({
+          name: req.body.name,
+          email: req.body.email,
+          company: req.body.company,
+          password: hashed,
+          bays: [],
+          games: [],
+          token: rand(process.env.SALT_ROUNDS),
         })
-        .catch((err) => {
-          return res.status(500).json({ err });
-        });
+          .save()
+          .then((data) => {
+            return res.status(500).send("New User Registered");
+          })
+          .catch((err) => {
+            console.log(err);
+            return res
+              .status(500)
+              .send("New User Could not be added to database");
+          });
+      });
     });
   } catch (err) {
-    return res.status(500).json({ err });
+    return res.status(500).send("Server Error");
   }
 });
 router.route("/login").post((req, res) => {
