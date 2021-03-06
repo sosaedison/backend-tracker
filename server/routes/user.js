@@ -43,12 +43,12 @@ router.route("/login").post((req, res) => {
   try {
     User.findOne({ email: req.body.email }, (err, user) => {
       bcrypt.compare(req.body.password, user.password, (err, result) => {
-        if (user) return res.status(200).send("Login Success");
+        if (result) return res.status(200).send("Login Success");
         return res.status(401).send("Login Error");
       });
     });
   } catch (error) {
-    res.status(500).json({ error });
+    return res.status(500).send("Internal Server Error");
   }
 });
 

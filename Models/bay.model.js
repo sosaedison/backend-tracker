@@ -14,7 +14,7 @@ const BaySchema = new Schema(
       },
     ],
     company: String,
-    user_id: {
+    user_token: {
       type: Schema.Types.ObjectId,
       required: true,
     },

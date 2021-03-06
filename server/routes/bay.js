@@ -6,28 +6,46 @@ const bcrypt = require("bcryptjs");
 
 router.route("/login").post((req, res) => {
   try {
-    User.findOne({ email: String(req.body.email) })
-      .then((user) => {
-        bcrypt
-          .compare(String(req.body.password), user.hash)
-          .then((data) => {
-            res.status(201).json({ data });
-          })
-          .catch((err) => res.status(500).json({ err }));
-      })
-      .catch((err) => {
-        res.status(401).json({ err });
+    User.findOne({ email: String(req.body.email) }, (err, user) => {
+      bcrypt.compare(req.body.password, user.password, (err, result) => {
+        if (result) return res.status(200).send("Login Success");
+        return res.status(401).send("Login Error");
       });
+    });
   } catch (err) {
-    res.status(500).json({ err });
+    return res.status(500).send("Internal Server Error");
   }
 });
 
 router.route("/addbay").post((req, res) => {
   try {
-    User.find({ company: req.body.company }).then((data) => {});
+    User.find({ email: req.body.email }, (err, result) => {
+      let user = result[0];
+      let newBay = new Bay({
+        name: req.body.bay_name,
+        data: [],
+        company: user.company,
+        user_token: user.id,
+      })
+        .save()
+        .then((bay) => {
+          user.bays.push(bay.id);
+          user
+            .save()
+            .then(() => {
+              return res.status(201).send("Bay Added To User");
+            })
+            .catch(() => {
+              return res.status(500).send("Couldn't Save Bay To User");
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).send("Could Not Save Bay");
+        });
+    });
   } catch (err) {
-    res.status(500).json({ err });
+    return res.status(500).send("Internal Server Error");
   }
 });
 
