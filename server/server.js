@@ -7,8 +7,6 @@ const mongoose = require("mongoose");
 const helmet = require("helmet");
 const exit_codes = require("../config/exit_codes.json");
 const UserRouter = require("./routes/user");
-const BayRouter = require("./routes/bay");
-const DataRouter = require("./routes/baydata");
 
 // Middleware Functions
 app.use(cors());
@@ -16,8 +14,6 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/user", UserRouter);
-app.use("/bay", BayRouter);
-app.use("/data", DataRouter);
 
 // DB Connection
 mongoose
@@ -26,7 +22,7 @@ mongoose
     useUnifiedTopology: true,
     useCreateIndex: true,
   })
-  .then((result) =>
+  .then(() =>
     app.listen(process.env.PORT, () => {
       console.log(`SERVER RUNNING ON PORT: ${process.env.PORT}`);
     })

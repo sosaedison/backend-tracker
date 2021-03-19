@@ -14,7 +14,10 @@ const UserSchema = new Schema(
       lowercase: true,
       unique: true,
     },
-    company: String,
+    company: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -26,7 +29,6 @@ const UserSchema = new Schema(
       },
     ],
     games: Array,
-    token: String,
   },
   {
     timestamps: true,
