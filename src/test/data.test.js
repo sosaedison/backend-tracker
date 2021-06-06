@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const { MongoClient } = require("mongodb");
-const User = require("../Models/user.model");
+const BayService = "../services/bay.service";
 
 describe("Data fetch should return", () => {
   let connection;
@@ -19,7 +19,16 @@ describe("Data fetch should return", () => {
     await connection.close();
   });
 
-  it("all data in mongodb from month start to now", () => {});
+  it("all data in mongodb from month start to now", () => {
+    const bayservice = new BayService();
+    reqBody = {
+      game: "test.exe",
+      play_time: 10,
+      bay_id: "Test Bay",
+    };
+
+    expect(bayservice.addData(reqBody)).toBe({ message: "Data added" });
+  });
 
   it.todo("a top game for the interval of data per bay");
 });
