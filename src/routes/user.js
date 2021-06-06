@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const User = require("../../Models/user.model");
-const Data = require("../../Models/data.model");
-const Bay = require("../../Models/bay.model");
+const User = require("../Models/user.model");
+const Data = require("../Models/data.model");
+const Bay = require("../Models/bay.model");
 const bcrypt = require("bcryptjs");
 const SALT_ROUNDS = 10;
 

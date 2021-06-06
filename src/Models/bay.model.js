@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import { Schema, model } from "mongoose";
 
 const BaySchema = new Schema(
   {
@@ -19,4 +18,4 @@ const BaySchema = new Schema(
   }
 );
 
-module.exports = mongoose.model("Bay", BaySchema);
+module.exports = model("Bay", BaySchema);
