@@ -9,6 +9,10 @@ const BaySchema = new Schema(
         ref: "datas",
       },
     ],
+    bay_name: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
